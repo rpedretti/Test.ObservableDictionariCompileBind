@@ -1,0 +1,50 @@
+﻿<Page
+    x:Class="Test.ObservableDictionariCompileBind.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Test.ObservableDictionariCompileBind.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:t10converters="using:Template10.Converters"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <t10converters:ValueWhenConverter When="{x:Null}" x:Key="VisibleWhenNullConverter">
+            <t10converters:ValueWhenConverter.Value>
+                <Visibility>Collapsed</Visibility>
+            </t10converters:ValueWhenConverter.Value>
+            <t10converters:ValueWhenConverter.Otherwise>
+                <Visibility>Visible</Visibility>
+            </t10converters:ValueWhenConverter.Otherwise>
+        </t10converters:ValueWhenConverter>
+    </Page.Resources>
+    
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBox Text="{x:Bind ViewModel.Model.ValidatedProp1, Mode=TwoWay}" 
+                   FontSize="26"
+                   Margin="0,0,0,10"
+                   x:Name="Prop1TextBox"/>
+        <TextBlock Text="{x:Bind ViewModel.Model.Errors['ValidatedProp1'], Mode=OneWay}"
+                   Visibility="{x:Bind ViewModel.Model.Errors['ValidatedProp1'], Converter={StaticResource VisibleWhenNullConverter}, Mode=OneWay}"
+                   x:Name="Prop1TextBlockError"
+                   Foreground="Red"
+                   RelativePanel.Below="Prop1TextBox"/>
+
+        <TextBox Text="{x:Bind ViewModel.Model.ValidatedProp2, Mode=TwoWay}" 
+                   FontSize="26"
+                   Margin="0,30,0,10"
+                   x:Name="Prop2TextBox"
+                 RelativePanel.Below="Prop1TextBlockError"/>
+        <TextBlock Text="{x:Bind ViewModel.Model.Errors['ValidatedProp2'], Mode=OneWay}"
+                   Visibility="{x:Bind ViewModel.Model.Errors['ValidatedProp2'], Converter={StaticResource VisibleWhenNullConverter}, Mode=OneWay}"
+                   x:Name="Prop2TextBlockError"
+                   Foreground="Red"
+                   RelativePanel.Below="Prop2TextBox"/>
+
+        <Button Content="VALIDATE"
+                Margin="0,20,0,0"
+                RelativePanel.Below="Prop2TextBlockError"
+                Command="{x:Bind ViewModel.ValidateCommand}"
+                RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+    </RelativePanel>
+</Page>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Test.ObservableDictionariCompileBind.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -13,9 +14,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace Test.ObservableDictionariCompileBind
+namespace Test.ObservableDictionariCompileBind.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -25,6 +26,15 @@ namespace Test.ObservableDictionariCompileBind
         public MainPage()
         {
             this.InitializeComponent();
+            DataContext = new MainPageViewModel();
+            ViewModel.Model.Errors.MapChanged += Errors_MapChanged;
         }
+
+        private void Errors_MapChanged(IObservableMap<string, string> sender, IMapChangedEventArgs<string> @event)
+        {
+              Bindings.Update(); //Comment this to NOT see the updates by binding
+        }
+
+        MainPageViewModel ViewModel => DataContext as MainPageViewModel;
     }
 }
